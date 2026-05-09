@@ -11,33 +11,94 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #fafafa;
+            --bg-quaternary: #f9f9f9;
+            --text-primary: #333333;
+            --text-secondary: #777777;
+            --text-tertiary: #999999;
+            --border-primary: #e0e0e0;
+            --border-secondary: #d0d0d0;
+            --border-tertiary: #e8e8e8;
+            --button-primary: #333333;
+            --button-secondary: #666666;
+            --button-hover: #555555;
+            --button-hover-2: #888888;
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #333333;
+            --bg-quaternary: #323232;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #808080;
+            --border-primary: #404040;
+            --border-secondary: #505050;
+            --border-tertiary: #3a3a3a;
+            --button-primary: #f0f0f0;
+            --button-secondary: #888888;
+            --button-hover: #d0d0d0;
+            --button-hover-2: #707070;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: var(--bg-primary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .theme-toggle {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            background: var(--button-secondary);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .theme-toggle:hover {
+            background: var(--button-hover-2);
+            transform: translateY(-1px);
         }
 
         .container {
-            background: #ffffff;
+            background: var(--bg-secondary);
             border-radius: 12px;
             padding: 40px;
             max-width: 600px;
             width: 100%;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-primary);
+            transition: all 0.3s ease;
         }
 
         h1 {
             text-align: center;
-            color: #333333;
+            color: var(--text-primary);
             margin-bottom: 30px;
             font-size: 2.5em;
             font-weight: 300;
             letter-spacing: -1px;
+            transition: color 0.3s ease;
         }
 
         .setup-section {
@@ -57,10 +118,10 @@
         input[type="datetime-local"] {
             flex: 1;
             padding: 12px 15px;
-            border: 1px solid #d0d0d0;
+            border: 1px solid var(--border-secondary);
             border-radius: 6px;
-            background: #fafafa;
-            color: #333333;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             font-size: 1em;
             min-width: 150px;
             transition: all 0.3s ease;
@@ -68,14 +129,14 @@
 
         input[type="text"]::placeholder,
         input[type="datetime-local"]::placeholder {
-            color: #999999;
+            color: var(--text-tertiary);
         }
 
         input[type="text"]:focus,
         input[type="datetime-local"]:focus {
             outline: none;
-            border-color: #666666;
-            background: #ffffff;
+            border-color: var(--text-secondary);
+            background: var(--bg-secondary);
             box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.1);
         }
 
@@ -83,8 +144,8 @@
             padding: 12px 20px;
             border: none;
             border-radius: 6px;
-            background: #333333;
-            color: white;
+            background: var(--button-primary);
+            color: var(--bg-primary);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -92,7 +153,7 @@
         }
 
         button:hover {
-            background: #555555;
+            background: var(--button-hover);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
@@ -111,13 +172,13 @@
         .quick-buttons button {
             padding: 10px 15px;
             font-size: 0.9em;
-            background: #666666;
+            background: var(--button-secondary);
             flex: 1;
             min-width: 100px;
         }
 
         .quick-buttons button:hover {
-            background: #888888;
+            background: var(--button-hover-2);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
@@ -130,41 +191,44 @@
 
         .time-unit {
             text-align: center;
-            background: #f9f9f9;
+            background: var(--bg-quaternary);
             border-radius: 8px;
             padding: 20px 10px;
-            border: 1px solid #e8e8e8;
+            border: 1px solid var(--border-tertiary);
             transition: all 0.3s ease;
         }
 
         .time-unit:hover {
-            border-color: #d0d0d0;
-            background: #ffffff;
+            border-color: var(--border-secondary);
+            background: var(--bg-secondary);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
         .time-number {
             font-size: 2.5em;
             font-weight: 600;
-            color: #333333;
+            color: var(--text-primary);
             margin-bottom: 5px;
+            transition: color 0.3s ease;
         }
 
         .time-label {
             font-size: 0.9em;
-            color: #777777;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
 
         .event-name {
             text-align: center;
             font-size: 1.3em;
-            color: #333333;
+            color: var(--text-primary);
             margin-bottom: 15px;
             font-weight: 500;
             min-height: 30px;
+            transition: color 0.3s ease;
         }
 
         .status-message {
@@ -176,9 +240,9 @@
         }
 
         .finished {
-            background: #f0f0f0;
-            border: 1px solid #d0d0d0;
-            color: #555555;
+            background: var(--bg-quaternary);
+            border: 1px solid var(--border-secondary);
+            color: var(--text-secondary);
             animation: pulse 1s infinite;
         }
 
@@ -208,6 +272,13 @@
         }
 
         @media (max-width: 600px) {
+            .header {
+                position: static;
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: center;
+            }
+
             .container {
                 padding: 25px;
             }
@@ -237,6 +308,10 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+    </div>
+
     <div class="container">
         <h1>⏱️ Licznik</h1>
 
@@ -279,6 +354,28 @@
 
     <script>
         let countdownInterval;
+
+        // Przywróć zapisany tryb
+        function initTheme() {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                updateThemeButton();
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const button = document.querySelector('.theme-toggle');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            button.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
 
         function setCountdown() {
             const eventName = document.getElementById('eventName').value || 'Moje Wydarzenie';
@@ -366,6 +463,8 @@
 
         // Załaduj zapisane dane przy otwarciu strony
         window.addEventListener('load', () => {
+            initTheme();
+
             const savedName = localStorage.getItem('eventName');
             const savedDate = localStorage.getItem('eventDate');
 

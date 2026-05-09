@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licznik Odliczający</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgba(48, 43, 99, 0.8), rgba(36, 36, 62, 0.8));
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .setup-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"],
+        input[type="datetime-local"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1em;
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="datetime-local"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="text"]:focus,
+        input[type="datetime-local"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-buttons button {
+            padding: 10px 15px;
+            font-size: 0.9em;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .quick-buttons button:hover {
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .time-unit {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px 10px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .time-unit:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .time-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .time-label {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-name {
+            text-align: center;
+            font-size: 1.3em;
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 500;
+            min-height: 30px;
+        }
+
+        .status-message {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .finished {
+            background: linear-gradient(135deg, rgba(245, 87, 108, 0.3), rgba(240, 147, 251, 0.3));
+            border: 1px solid rgba(245, 87, 108, 0.5);
+            color: #f5576c;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            pointer-events: none;
+            animation: confetti-fall 3s ease-in forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotateZ(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .time-number {
+                font-size: 2em;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            input[type="text"],
+            input[type="datetime-local"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏱️ Licznik</h1>
+
+        <div class="setup-section">
+            <div class="input-group">
+                <input type="text" id="eventName" placeholder="Nazwa wydarzenia">
+                <input type="datetime-local" id="eventDate">
+            </div>
+            <button onclick="setCountdown()">Ustaw Licznik</button>
+
+            <div class="quick-buttons">
+                <button onclick="setQuickCountdown(1)">Jutro</button>
+                <button onclick="setQuickCountdown(7)">Za Tydzień</button>
+                <button onclick="setQuickCountdown(30)">Za Miesiąc</button>
+            </div>
+        </div>
+
+        <div id="statusMessage"></div>
+        <div class="event-name" id="eventNameDisplay"></div>
+
+        <div class="countdown">
+            <div class="time-unit">
+                <div class="time-number" id="days">0</div>
+                <div class="time-label">Dni</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-number" id="hours">0</div>
+                <div class="time-label">Godziny</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-number" id="minutes">0</div>
+                <div class="time-label">Minuty</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-number" id="seconds">0</div>
+                <div class="time-label">Sekundy</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+
+        function setCountdown() {
+            const eventName = document.getElementById('eventName').value || 'Moje Wydarzenie';
+            const eventDate = document.getElementById('eventDate').value;
+
+            if (!eventDate) {
+                alert('Proszę wybrać datę i godzinę');
+                return;
+            }
+
+            localStorage.setItem('eventName', eventName);
+            localStorage.setItem('eventDate', eventDate);
+
+            document.getElementById('eventNameDisplay').textContent = eventName;
+            clearInterval(countdownInterval);
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function setQuickCountdown(days) {
+            const now = new Date();
+            now.setDate(now.getDate() + days);
+            now.setHours(0, 0, 0, 0);
+
+            const eventName = days === 1 ? 'Jutro' : days === 7 ? 'Za Tydzień' : 'Za Miesiąc';
+            document.getElementById('eventName').value = eventName;
+
+            const isoString = now.toISOString().slice(0, 16);
+            document.getElementById('eventDate').value = isoString;
+
+            setCountdown();
+        }
+
+        function updateCountdown() {
+            const eventDateStr = localStorage.getItem('eventDate');
+
+            if (!eventDateStr) return;
+
+            const eventDate = new Date(eventDateStr);
+            const now = new Date();
+            const diff = eventDate - now;
+
+            const statusEl = document.getElementById('statusMessage');
+
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+
+                statusEl.className = 'status-message finished';
+                statusEl.textContent = '🎉 Czas się skończył! 🎉';
+
+                createConfetti();
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            statusEl.className = 'status-message';
+            statusEl.textContent = '';
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.delay = Math.random() * 0.5 + 's';
+                confetti.style.background = ['#667eea', '#764ba2', '#f093fb', '#f5576c'][Math.floor(Math.random() * 4)];
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3500);
+            }
+        }
+
+        // Załaduj zapisane dane przy otwarciu strony
+        window.addEventListener('load', () => {
+            const savedName = localStorage.getItem('eventName');
+            const savedDate = localStorage.getItem('eventDate');
+
+            if (savedName) {
+                document.getElementById('eventName').value = savedName;
+                document.getElementById('eventNameDisplay').textContent = savedName;
+            }
+
+            if (savedDate) {
+                document.getElementById('eventDate').value = savedDate;
+                updateCountdown();
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
